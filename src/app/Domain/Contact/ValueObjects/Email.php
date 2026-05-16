@@ -3,7 +3,7 @@ namespace App\Domain\Contact\ValueObjects;
 
 class Email
 {
-    private const NON_CORPORATE = ['gmail.com', 'hotmail.com', 'yahoo.com', 'outlook.com'];
+    private const NON_CORPORATE = ['gmail', 'hotmail', 'yahoo', 'outlook'];
 
     public function __construct(private readonly string $value)
     {
@@ -15,7 +15,12 @@ class Email
     public function isCorporate(): bool
     {
         $domain = explode('@', $this->value)[1];
-        return !in_array($domain, self::NON_CORPORATE);
+        $parts = explode('.', $domain);
+
+        // Pega a parte principal (ex: "gmail" de "gmail.com" ou "gmail.com.br")
+        $mainDomain = $parts[0];
+
+        return !in_array($mainDomain, self::NON_CORPORATE);
     }
 
     public function isBrazilian(): bool
