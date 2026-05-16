@@ -84,6 +84,24 @@ class PhoneTest extends TestCase
         $this->assertTrue($phone_19->isFromSaoPaulo());
     }
 
+    public function test_not_from_brazil_phone(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new Phone('+15554443333');
+    }
+    public function test_ddd_invalid(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new Phone('10999999999');
+        new Phone('1099999999');
+    }
+
+    public function test_phone_with_11_digits_must_start_with_9(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new Phone('11888888888');
+    }
+
     public function test_area_code_not_from_sao_paulo(): void
     {
         $phone = new Phone('21999999999');
