@@ -22,7 +22,7 @@ class PhoneTest extends TestCase
     public function test_accepts_phone_without_ninth_digit(): void
     {
         $phone = new Phone('1199999999');
-        $this->assertEquals('1199999999', (string) $phone);
+        $this->assertEquals('11999999999', (string) $phone);
     }
 
     public function test_strips_ddi_with_plus_sign(): void
