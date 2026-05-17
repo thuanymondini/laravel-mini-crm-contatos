@@ -17,6 +17,7 @@ class ProcessContactScoreUseCaseTest extends TestCase
 {
     private ContactRepositoryInterface&MockObject $repository;
     private ScoreCalculatorService&MockObject $calculator;
+    private \Illuminate\Contracts\Events\Dispatcher&MockObject $dispatcher;
     private ProcessContactScoreUseCase $useCase;
 
     protected function setUp(): void
@@ -25,7 +26,12 @@ class ProcessContactScoreUseCaseTest extends TestCase
 
         $this->repository = $this->createMock(ContactRepositoryInterface::class);
         $this->calculator = $this->createMock(ScoreCalculatorService::class);
-        $this->useCase = new ProcessContactScoreUseCase($this->repository, $this->calculator);
+        $this->dispatcher = $this->createMock(\Illuminate\Contracts\Events\Dispatcher::class);
+        $this->useCase = new ProcessContactScoreUseCase(
+            $this->repository,
+            $this->calculator,
+            $this->dispatcher,
+        );
     }
 
     private function makeContact(): Contact
