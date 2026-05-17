@@ -1,0 +1,28 @@
+<?php
+
+namespace App\Infrastructure\Contact\Jobs;
+
+use App\Application\Contact\UseCases\ProcessContactScoreUseCase;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+
+class ProcessContactScoreJob implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public function __construct(public readonly int $contactId) {}
+
+    public function handle(ProcessContactScoreUseCase $useCase): void
+    {
+        sleep(2);
+        $useCase->execute($this->contactId);
+    }
+
+    public function handleForTesting(ProcessContactScoreUseCase $useCase): void
+    {
+        $useCase->execute($this->contactId);
+    }
+}
