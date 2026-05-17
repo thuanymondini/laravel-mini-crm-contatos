@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Domain\Contact\Events\ContactScoreProcessed;
+use App\Infrastructure\Contact\Listeners\LogContactScoreListener;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +22,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Event::listen(
+            ContactScoreProcessed::class,
+            LogContactScoreListener::class
+        );
     }
 }
