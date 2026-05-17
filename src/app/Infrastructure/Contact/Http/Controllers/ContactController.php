@@ -12,7 +12,7 @@ use App\Infrastructure\Contact\Http\Requests\UpdateContactRequest;
 use App\Infrastructure\Contact\Http\Resources\ContactResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use App\Infrastructure\Contact\Jobs\ProcessContactScoreJob;
 use Illuminate\Routing\Controller;
 
 class ContactController extends Controller
@@ -83,5 +83,14 @@ class ContactController extends Controller
         $useCase->execute($contact);
 
         return response()->json(null, 204);
+    }
+
+    public function processScore(
+        int $contact,
+        GetContactUseCase $useCase
+    ): JsonResponse {
+        $useCase->execute($contact);
+        ProcessContactScoreJob::dispatch($contact);
+        return response()->json(['message' => 'Score processing started'], 202);
     }
 }
