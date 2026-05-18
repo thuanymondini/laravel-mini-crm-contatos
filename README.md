@@ -97,3 +97,37 @@ Avaliaremos severamente a qualidade do seu código, não apenas se a API "funcio
 5. **Prazo de entrega sugerido**: 7 dias. Foque na qualidade da arquitetura e dos testes, mesmo que o escopo funcional não esteja 100% polido.
 
 Boa sorte 🚀
+
+---
+
+## 🚀 Como Rodar o Projeto Localmente com Docker
+
+### 1. Clone o Repositório
+
+```bash
+git clone <url-do-repositorio>
+cd laravel-mini-crm-contatos
+```
+
+### 2. Iniciar o sistema
+O sistema é feito com docker e docker compose, portanto para subi-lo basta rodar:
+
+```bash
+cp .env.example .env
+cp src/.env.example src/.env
+docker-compose up -d
+```
+
+Após os containeres todos subirem, execute
+
+```bash
+docker compose exec app php artisan migrate
+docker compose exec app php artisan optimize
+```
+
+### 3. Testes
+Para rodas os testes basta rodar:
+
+```bash
+docker compose exec app php artisan test
+```
