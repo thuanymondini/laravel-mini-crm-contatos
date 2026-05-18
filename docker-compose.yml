@@ -12,6 +12,12 @@ services:
       - ./src:/var/www
     networks:
       - laravel_network
+    healthcheck:
+      test: ["CMD", "test", "-f", "/var/www/vendor/autoload.php"]
+      interval: 10s
+      timeout: 5s
+      retries: 1000
+      start_period: 60s
 
   reverb:
     build:
@@ -24,9 +30,12 @@ services:
     volumes:
       - ./src:/var/www
     depends_on:
-      - db
-      - redis
-      - app
+      app:
+        condition: service_healthy  # ← aguarda o healthcheck passar
+      db:
+        condition: service_started
+      redis:
+        condition: service_started
     networks:
       - laravel_network
 
@@ -41,11 +50,15 @@ services:
     volumes:
       - ./src:/var/www
     depends_on:
-      - db
-      - redis
-      - app
+      app:
+        condition: service_healthy  # ← aguarda o healthcheck passar
+      db:
+        condition: service_started
+      redis:
+        condition: service_started
     networks:
       - laravel_network
+
   nginx:
     image: nginx:alpine
     ports:
@@ -54,7 +67,8 @@ services:
       - ./src:/var/www
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
-      - app
+      app:
+        condition: service_healthy
     networks:
       - laravel_network
 
