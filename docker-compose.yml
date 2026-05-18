@@ -14,22 +14,36 @@ services:
       - laravel_network
 
   reverb:
-    image: php:8.3-fpm        # mesmo Dockerfile do app
     build:
       context: ./docker/php
       dockerfile: Dockerfile
-    command: php artisan reverb:start --host=0.0.0.0 --port=8080
+    command: php artisan reverb:start --host=0.0.0.0 --port=8080 --debug
     working_dir: /var/www
+    env_file:
+      - .env
     volumes:
       - ./src:/var/www
-    ports:
-      - "8080:8080"
     depends_on:
       - db
       - redis
     networks:
       - laravel_network
 
+  queue:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    command: php artisan queue:work redis --sleep=3 --tries=3
+    working_dir: /var/www
+    env_file:
+      - .env
+    volumes:
+      - ./src:/var/www
+    depends_on:
+      - db
+      - redis
+    networks:
+      - laravel_network
   nginx:
     image: nginx:alpine
     ports:
