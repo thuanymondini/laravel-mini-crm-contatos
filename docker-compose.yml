@@ -26,6 +26,7 @@ services:
     depends_on:
       - db
       - redis
+      - app
     networks:
       - laravel_network
 
@@ -42,6 +43,7 @@ services:
     depends_on:
       - db
       - redis
+      - app
     networks:
       - laravel_network
   nginx:
