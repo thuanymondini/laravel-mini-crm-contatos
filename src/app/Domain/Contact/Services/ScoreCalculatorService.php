@@ -17,6 +17,7 @@ class ScoreCalculatorService {
         $score = 0;
         foreach ($this->rules as $rule) {
             $score += $rule->calculate($contact);
+            sleep(2);
         }
         return $score;
     }
