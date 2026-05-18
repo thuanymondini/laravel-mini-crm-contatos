@@ -17,7 +17,6 @@ class ProcessContactScoreJob implements ShouldQueue
 
     public function handle(ProcessContactScoreUseCase $useCase): void
     {
-        sleep(2);
         $useCase->execute($this->contactId);
     }
 
